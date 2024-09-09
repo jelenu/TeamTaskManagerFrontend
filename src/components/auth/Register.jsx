@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
-  // State variables to store username, email, password, confirm password, and error message
+  // State variables to store username, email, password, confirm password, and error messages
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessages, setErrorMessages] = useState([]);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const navigate = useNavigate();
 
-   // Effect to check if user is already authenticated
-   useEffect(() => {
+  // Effect to check if user is already authenticated
+  useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       // Navigate back if an access token is present
@@ -25,9 +25,12 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Clear previous errors
+    setErrorMessages([]);
+
     // Validate that password and confirmPassword match
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match. Please try again.");
+      setErrorMessages((prev) => [...prev, "Passwords do not match. Please try again."]);
       return;
     }
 
@@ -53,20 +56,24 @@ export const Register = () => {
       if (response.ok) {
         // Registration successful
         setRegistrationSuccess(true);
-        setErrorMessage(null);
+        setErrorMessages([]);
         setUsername("");
         setEmail("");
         setPassword("");
+        setConfirmPassword("");
       } else {
-        // Handle errors
-        setErrorMessage(
-          data.username
-            ? data.username[0]
-            : "Registration failed. Please try again."
-        );
+        console.log(data)
+        // Handle errors, display all of them
+        const errors = [];
+        for (const key in data) {
+          if (Array.isArray(data[key])) {
+            data[key].forEach((message) => errors.push(message));
+          }
+        }
+        setErrorMessages(errors);
       }
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again later.");
+      setErrorMessages(["An error occurred. Please try again later."]);
       console.error("Error:", error);
     }
   };
@@ -77,9 +84,15 @@ export const Register = () => {
         {!registrationSuccess ? (
           <>
             <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-            {/* Display error message if present */}
-            {errorMessage && (
-              <div className="text-red-500 mb-4">{errorMessage}</div>
+            {/* Display error messages if present */}
+            {errorMessages.length > 0 && (
+              <div className="text-red-500 mb-4">
+                <ul>
+                  {errorMessages.map((message, index) => (
+                    <li key={index}>{message}</li>
+                  ))}
+                </ul>
+              </div>
             )}
             {/* Form with submit handler */}
             <form onSubmit={handleSubmit}>

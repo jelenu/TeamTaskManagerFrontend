@@ -65,7 +65,7 @@ export const Login = () => {
         navigate("/");
       } else {
         // Set error message if login fails
-        setErrorMessage("Login failed. Please check your credentials.");
+        setErrorMessage(data.detail);
       }
     } catch (error) {
       // Set error message if there's an exception
