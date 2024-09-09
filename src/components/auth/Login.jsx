@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 // Import useNavigate for programmatic navigation
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 // Import custom hook for authentication context
-import { useAuth } from "../../context/AuthContext"; 
+import { useAuth } from "../../context/AuthContext";
 
 export const Login = () => {
   // State variables to store username, password, and error message
@@ -20,13 +20,13 @@ export const Login = () => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       // Navigate back if an access token is present
-      navigate(-1); 
+      navigate(-1);
     }
   }, [navigate]);
 
   // Handle form submission
   const handleSubmit = async (e) => {
-     // Prevent default form submission behavior
+    // Prevent default form submission behavior
     e.preventDefault();
 
     // Prepare login data
@@ -46,12 +46,12 @@ export const Login = () => {
       });
 
       // Parse response JSON
-      const data = await response.json(); 
+      const data = await response.json();
 
       // Check if tokens are received
       if (data.access && data.refresh) {
         // Log tokens to the console
-        console.log("JWT Token:", data); 
+        console.log("JWT Token:", data);
 
         // Call login function with tokens
         login(data.access, data.refresh);
@@ -62,31 +62,30 @@ export const Login = () => {
         setErrorMessage(null);
 
         // Navigate back after successful login
-        navigate(-1);
+        navigate("/");
       } else {
         // Set error message if login fails
-        setErrorMessage("Login failed. Please check your credentials."); 
+        setErrorMessage("Login failed. Please check your credentials.");
       }
-
     } catch (error) {
       // Set error message if there's an exception
-      setErrorMessage("Login failed. Please check your credentials."); 
+      setErrorMessage("Login failed. Please check your credentials.");
 
       // Log error to the console
-      console.error("Error:", error); 
+      console.error("Error:", error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100"> 
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2> 
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         {/* Display error message if present */}
         {errorMessage && (
           <div className="text-red-500 mb-4">{errorMessage}</div>
         )}
         {/* Form with submit handler */}
-        <form onSubmit={handleSubmit}> 
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -99,7 +98,7 @@ export const Login = () => {
               type="text"
               value={username}
               // Update username state on change
-              onChange={(e) => setUsername(e.target.value)} 
+              onChange={(e) => setUsername(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter your username"
               required
@@ -132,6 +131,17 @@ export const Login = () => {
             </button>
           </div>
         </form>
+        <div className="text-center mt-4">
+          <p>
+            Don't have an account?{" "}
+            <span
+              className="text-blue-500 hover:text-blue-700 cursor-pointer"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
