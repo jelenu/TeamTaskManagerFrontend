@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
+import Cookies from 'js-cookie';
 
 // Create a context for authentication
 const AuthContext = createContext();
@@ -10,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     // Function to verify the current access token
     const verifyToken = async () => {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = Cookies.get('accessToken');
         if (accessToken) {
             try {
                 const response = await fetch("http://127.0.0.1:8000/auth/jwt/verify/", {
@@ -33,50 +34,51 @@ export const AuthProvider = ({ children }) => {
             }
         } else {
             // Set not authenticated if no token is present
-            setIsAuthenticated(false); 
+            logout()
         }
     };
 
     // Function to refresh the access token
     const refreshToken = async () => {
         try {
+            const refreshToken = Cookies.get('refreshToken');
             const response = await fetch('http://127.0.0.1:8000/auth/jwt/refresh/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ refreshToken: localStorage.getItem('refreshToken') }),
+                body: JSON.stringify({ refresh: refreshToken  }),
             });
             const data = await response.json();
-            if (data.accessToken) {
-                // Update the access token in localStorage
-                localStorage.setItem('accessToken', data.accessToken);
+            if (data.access) {
+                // Update the access token in cookie
+                Cookies.set('accessToken', data.access, { secure: true, sameSite: 'strict' });
 
                 // Set authenticated with the new access token
                 setIsAuthenticated(true); 
             } else {
                 // Set not authenticated if refreshing fails
-                setIsAuthenticated(false); 
+                logout()
             }
         } catch (error) {
             // Set not authenticated if there's an error
-            setIsAuthenticated(false); 
+            logout()
         }
     };
 
-    // Function to log in and store tokens in localStorage
+    // Function to log in and store tokens in cookie
     const login = (accessToken, refreshToken) => {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        Cookies.set('accessToken', accessToken, { secure: true, sameSite: 'strict' });
+        Cookies.set('refreshToken', refreshToken, { secure: true, sameSite: 'strict' });
 
         // Set authenticated upon login
         setIsAuthenticated(true); 
     };
 
-    // Function to log out and remove tokens from localStorage
+    // Function to log out and remove tokens from cookie
     const logout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
 
         // Set not authenticated upon logout
         setIsAuthenticated(false); 

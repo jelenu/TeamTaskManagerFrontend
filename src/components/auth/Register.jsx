@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export const Register = () => {
   // State variables to store username, email, password, confirm password, and error messages
@@ -14,7 +15,7 @@ export const Register = () => {
 
   // Effect to check if user is already authenticated
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = Cookies.get('accessToken');
     if (accessToken) {
       // Navigate back if an access token is present
       navigate(-1);

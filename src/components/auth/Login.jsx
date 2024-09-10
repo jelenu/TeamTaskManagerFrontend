@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Import custom hook for authentication context
 import { useAuth } from "../../context/AuthContext";
-
+import Cookies from 'js-cookie';
+ 
 export const Login = () => {
   // State variables to store username, password, and error message
   const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@ export const Login = () => {
 
   // Effect to check if user is already authenticated
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = Cookies.get('accessToken');
     if (accessToken) {
       // Navigate back if an access token is present
       navigate(-1);
