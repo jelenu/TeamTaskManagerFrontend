@@ -135,12 +135,12 @@ export const Login = () => {
         <div className="text-center mt-4">
           <p>
             Don't have an account?{" "}
-            <span
+            <button
               className="text-blue-500 hover:text-blue-700 cursor-pointer"
               onClick={() => navigate("/register")}
             >
               Register
-            </span>
+            </button>
           </p>
         </div>
       </div>

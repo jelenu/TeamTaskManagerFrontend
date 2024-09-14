@@ -4,7 +4,7 @@ import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { useAuth } from "./context/AuthContext";
 import { EmailActivation } from "./components/auth/EmailActivation";
-import { Pruebas } from "./components/boards/Pruebas";
+import { MainPage } from "./components/layout/MainPage";
 
 function App() {
   const { verifyToken } = useAuth();
@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Pruebas/>} />
+        <Route path="/" element={<MainPage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/email_activation/:param1/:param2" element={<EmailActivation />} />

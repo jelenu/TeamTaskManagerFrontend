@@ -177,12 +177,12 @@ export const Register = () => {
             <div className="text-center mt-4">
               <p>
                 Already have an account?{" "}
-                <span
-                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                <button
+                  className="text-blue-500 hover:text-blue-700 "
                   onClick={() => navigate("/login")}
                 >
                   Log in
-                </span>
+                </button>
               </p>
             </div>
           </>

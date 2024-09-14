@@ -84,6 +84,8 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false); 
     };
 
+
+    
     // Provide the context values to children components
     return (
         <AuthContext.Provider value={{ verifyToken, isAuthenticated, login, logout }}>

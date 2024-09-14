@@ -1,17 +1,19 @@
 import React from "react";
 // Import Link for navigation
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 // Import custom hook for authentication context
-import { useAuth } from "../../context/AuthContext"; 
-
+import { useAuth } from "../../context/AuthContext";
+import { Notifications } from "../notifications/Notifications";
 export const Header = () => {
   // Destructure authentication status and logout function from context
-  const { isAuthenticated, logout } = useAuth(); 
+  const { isAuthenticated, logout } = useAuth();
 
   // Function to handle logout action
   const handleLogout = () => {
     // Call logout function from context
-    logout(); 
+    logout();
+    // Reload the page after logout
+    window.location.reload();
   };
 
   return (
@@ -22,12 +24,15 @@ export const Header = () => {
           {
             // Conditional rendering based on authentication status
             isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Logout
-              </button>
+              <div className="flex">
+                <Notifications/>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
               <>
                 {/* Link to login page */}
