@@ -11,7 +11,7 @@ export const MainPage = () => {
       <Header />
       <div className="flex flex-1">
         <SideBar onBoardSelect={setSelectedBoard} />
-        <div className="flex-1 p-4">
+        <div className="flex-1">
           {selectedBoard ? (
             <Board boardId={selectedBoard.id} boardName={selectedBoard.name} />
           ) : (

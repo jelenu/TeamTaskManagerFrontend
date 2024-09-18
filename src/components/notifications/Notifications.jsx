@@ -59,7 +59,7 @@ export const Notifications = () => {
     }, []);
 
     return (
-        <div className="text-white pr-2">
+        <div className="text-white pr-2 self-center">
             Notifications
             {isConnected ? " (Connected)" : " (Disconnected)"}
         </div>

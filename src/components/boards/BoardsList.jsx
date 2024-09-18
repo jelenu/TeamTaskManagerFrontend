@@ -7,6 +7,7 @@ export const BoardsList = ({ onBoardSelect }) => {
   const [boards, setBoards] = useState([]);
   const [createBoardResponseMessage, setCreateBoardResponseMessage] = useState('');
   const [newBoardName, setNewBoardName] = useState('');
+  const [selectedBoardId, setSelectedBoardId] = useState(null);
   const { isAuthenticated, verifyToken } = useAuth(); 
   const navigate = useNavigate();
 
@@ -74,14 +75,21 @@ export const BoardsList = ({ onBoardSelect }) => {
     }
   };
 
+  const handleBoardClick = (board) => {
+    setSelectedBoardId(board.id);
+    onBoardSelect(board);
+  };
+
   return (
     <div>
       {boards.length > 0 ? (
         boards.map((board) => (
           <button
             key={board.id}
-            className="w-full p-4 text-left hover:bg-gray-700"
-            onClick={() => onBoardSelect(board)} // Al hacer clic en un tablero, se pasa su id y nombre
+            className={`w-full p-4 text-left hover:bg-gray-700 ${
+              board.id === selectedBoardId ? 'bg-gray-500' : ''
+            }`}
+            onClick={() => handleBoardClick(board)}
           >
             {board.name}
           </button>

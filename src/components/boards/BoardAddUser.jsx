@@ -5,7 +5,7 @@ export const BoardAddUser = ({ boardId }) => {
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("standard");
   const [responseMessage, setResponseMessage] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controla la visibilidad del modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // Controls the modal visibility
 
   // Function to add a user to the board
   const addUserToBoard = async () => {
@@ -37,7 +37,7 @@ export const BoardAddUser = ({ boardId }) => {
 
       const data = await response.json();
 
-      setUserName("")
+      setUserName("");
       if (response.ok) {
         console.log("User successfully added to the board", data);
         setResponseMessage(data.message); // Display the success message
@@ -56,14 +56,19 @@ export const BoardAddUser = ({ boardId }) => {
     addUserToBoard();
   };
 
-  // Función para abrir y cerrar el modal
+  // Function to open and close the modal
   const toggleModal = () => {
+    if (isModalOpen) {
+      // Reset username and response message when closing the modal
+      setUserName("");
+      setResponseMessage("");
+    }
     setIsModalOpen(!isModalOpen);
   };
 
   return (
     <div>
-      {/* Botón que abre el modal */}
+      {/* Button that opens the modal */}
       <button
         onClick={toggleModal}
         className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
@@ -75,7 +80,7 @@ export const BoardAddUser = ({ boardId }) => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            {/* Botón para cerrar el modal */}
+            {/* Button to close the modal */}
             <button
               onClick={toggleModal}
               className="text-gray-500 hover:text-gray-700 float-right"
@@ -83,7 +88,7 @@ export const BoardAddUser = ({ boardId }) => {
               &#x2715;
             </button>
 
-            {/* Formulario dentro del modal */}
+            {/* Form inside the modal */}
             <h2 className="text-2xl mb-4">Add User to Board</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group mb-4">
@@ -122,7 +127,7 @@ export const BoardAddUser = ({ boardId }) => {
               </button>
             </form>
 
-            {/* Mostrar mensaje de respuesta */}
+            {/* Display response message */}
             {responseMessage && (
               <p className="mt-4 text-center text-red-500">{responseMessage}</p>
             )}
